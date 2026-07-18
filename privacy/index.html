@@ -27,8 +27,10 @@
       <strong>Коротко.</strong> GainzLog — приложение-дневник тренировок с приоритетом
       локального хранения (local-first). Данные хранятся на вашем устройстве и работают
       офлайн. Мы отправляем данные в облако <strong>только если вы вошли в аккаунт</strong>,
-      и только для синхронизации между вашими устройствами. Мы не продаём ваши данные,
-      не показываем рекламу и не используем сторонние трекеры.
+      и только для синхронизации между вашими устройствами. Мы не продаём ваши данные
+      и не показываем рекламу. Для аналитики использования и стабильности приложение
+      использует Firebase Analytics и Crashlytics (Google) — без рекламных трекеров
+      и межприложенческого отслеживания (см. раздел 2.5).
     </div>
 
     <h2>1. Кто мы</h2>
@@ -49,7 +51,7 @@
       <li><strong>Адрес электронной почты</strong> — при входе по email или через Google;</li>
       <li><strong>Отображаемое имя</strong> — если вы его указали.</li>
     </ul>
-    <p>Эти данные используются исключительно для аутентификации и работы приложения, не для отслеживания.</p>
+    <p>Эти данные используются исключительно для аутентификации и работы приложения, не для отслеживания. При входе они также сохраняются в вашем облачном профиле для синхронизации (см. раздел 3).</p>
 
     <h3>2.2. Данные тренировок и о здоровье</h3>
     <p>Вы вводите их сами в процессе использования:</p>
@@ -80,27 +82,33 @@
 
     <h3>2.5. Технические данные и аналитика</h3>
     <p>
-      GainzLog <strong>не использует</strong> рекламные идентификаторы, кросс-приложенческое
-      отслеживание и сторонние аналитические трекеры. Библиотека Firebase Analytics присутствует
-      в сборке как транзитивная зависимость, но сбор аналитики отключён на уровне конфигурации,
-      и приложение не обращается к серверам измерения. Настройки (единицы измерения, флаг
-      прохождения онбординга, звук таймера отдыха и т. п.) хранятся локально в UserDefaults.
+      GainzLog не использует рекламные идентификаторы (IDFA) и межприложенческое отслеживание
+      (ATT) и не показывает рекламу. Для аналитики использования и стабильности в приложение
+      встроены сервисы Google: <strong>Firebase Analytics</strong> (обезличенная статистика
+      использования — идентификатор экземпляра приложения, модель устройства, версия ОС,
+      события сессий и экранов) и <strong>Firebase Crashlytics</strong> (отчёты о сбоях — стек
+      вызовов, состояние устройства, идентификатор установки). Эти данные передаются в Google
+      и используются только для улучшения приложения — не для рекламы и не для отслеживания вас
+      в других приложениях; данные о здоровье (вес тела, тренировки) в аналитику не передаются.
+      Часть настроек хранится только локально (UserDefaults) и в облако не передаётся: флаг
+      прохождения онбординга, звук таймера отдыха, выбор групп мышц, состав вашей библиотеки
+      упражнений.
     </p>
 
     <h2>3. Где хранятся данные</h2>
     <ul>
       <li><strong>На устройстве</strong> — основное хранилище (SwiftData). Приложение полностью работает офлайн.</li>
-      <li><strong>В облаке (Google Cloud Firestore)</strong> — только когда вы вошли в аккаунт. Данные привязаны к вашему идентификатору пользователя (<code>users/{uid}/…</code>) и служат для синхронизации между вашими устройствами и резервного копирования.</li>
+      <li><strong>В облаке (Google Cloud Firestore)</strong> — только когда вы вошли в аккаунт. Данные привязаны к вашему идентификатору пользователя (<code>users/{uid}/…</code>) и служат для синхронизации между вашими устройствами и резервного копирования. Облачный профиль (документ <code>users/{uid}</code>) включает: адрес электронной почты, отображаемое имя, статус подтверждения email и дату создания аккаунта; единицы измерения, отслеживаемые упражнения и метрики прогресса, настройки таймера отдыха (длительность и вкл/выкл); вес тела и историю его изменения; а также ваши тренировки, шаблоны, планы и кастомные упражнения. Аватар, обратная связь, выбор групп мышц и состав библиотеки в облако не передаются.</li>
     </ul>
 
     <h2>4. Правовые основания (GDPR)</h2>
     <table>
       <tr><th>Цель</th><th>Основание (ст. 6/9 GDPR)</th></tr>
       <tr><td>Аутентификация и работа аккаунта</td><td>Исполнение договора (ст. 6(1)(b))</td></tr>
-      <tr><td>Облачная синхронизация данных о тренировках и весе (данные о здоровье)</td><td>Явное согласие (ст. 9(2)(a)); отзывается в любой момент</td></tr>
+      <tr><td>Облачная синхронизация данных о тренировках и весе (данные о здоровье)</td><td>Явное согласие (ст. 9(2)(a)); даётся включением синхронизации, отзывается в любой момент</td></tr>
       <tr><td>Локальное хранение и работа приложения</td><td>Исполнение договора (ст. 6(1)(b))</td></tr>
     </table>
-    <p>Вы можете отозвать согласие в любой момент — выйдя из аккаунта и/или удалив данные (раздел 6). Отзыв не затрагивает законность обработки до отзыва.</p>
+    <p>Облачная синхронизация по умолчанию выключена (local-first). Она включается только вашим активным действием — входом в аккаунт и подтверждением email после принятия настоящей Политики и Условий использования; это и есть ваше явное согласие на облачную обработку данных о здоровье. Вы можете отозвать согласие в любой момент — выйдя из аккаунта и/или удалив данные (раздел 6). Отзыв не затрагивает законность обработки до отзыва.</p>
 
     <h2>5. Передача третьим лицам</h2>
     <p>Мы не продаём и не сдаём в аренду персональные данные. Данные обрабатываются следующими субобработчиками (sub-processors) только для работы сервиса:</p>
@@ -110,22 +118,23 @@
     </ul>
     <p>
       Данные хранятся в инфраструктуре Google Cloud и могут обрабатываться за пределами вашей страны.
-      Такие трансграничные передачи защищены стандартными договорными положениями (SCC) и мерами Google.
+      Такие трансграничные передачи регулируются соглашением об обработке данных Google Cloud (DPA),
+      включая стандартные договорные положения (SCC) ЕС, и мерами безопасности Google.
     </p>
 
     <h2>6. Хранение и удаление данных</h2>
     <ul>
       <li>Локальные данные хранятся, пока вы не удалите их или не удалите приложение.</li>
       <li>Облачные данные хранятся, пока существует ваш аккаунт.</li>
-      <li>Вы можете <strong>удалить аккаунт</strong> в приложении (Настройки → аккаунт → удалить). После повторной аутентификации локальные и облачные данные стираются.</li>
-      <li>Выход из аккаунта останавливает облачную синхронизацию; локальные данные остаются на устройстве.</li>
+      <li>Вы можете <strong>удалить аккаунт</strong> в приложении (Настройки → раздел аккаунта → «Удалить аккаунт»). При необходимости приложение попросит повторный вход для подтверждения; после этого локальные и облачные данные стираются.</li>
+      <li>Выход из аккаунта останавливает облачную синхронизацию. Если аккаунт синхронизировался, приложение сначала отправляет несинхронизированные изменения в облако, затем удаляет локальную копию данных с этого устройства (повторный вход восстановит их из облака). Облачные данные при выходе не удаляются.</li>
     </ul>
 
     <h2>7. Ваши права</h2>
     <p>Согласно GDPR и аналогичным законам вы имеете право на: доступ, исправление, удаление, ограничение обработки, переносимость данных, возражение против обработки и отзыв согласия. Также вы вправе подать жалобу в надзорный орган по защите данных. Для реализации прав напишите на <a href="mailto:gainzlog.support@protonmail.com">gainzlog.support@protonmail.com</a>.</p>
 
     <h2>8. Дети</h2>
-    <p>GainzLog не предназначен для лиц младше 13 лет, и мы сознательно не собираем их данные.</p>
+    <p>GainzLog не предназначен для лиц младше 13 лет, и мы сознательно не собираем их данные. Там, где применимое законодательство устанавливает более высокий возраст цифрового согласия (например, до 16 лет в ряде стран ЕС), действует этот более высокий возраст.</p>
 
     <h2>9. Безопасность</h2>
     <p>Мы применяем разумные технические меры (шифрование канала при синхронизации, правила доступа на стороне сервера, привязка данных к идентификатору владельца). Абсолютной безопасности при передаче данных через интернет не существует.</p>
@@ -146,7 +155,9 @@
       <strong>In short.</strong> GainzLog is a local-first workout journal. Your data lives
       on your device and works offline. We send data to the cloud <strong>only when you are
       signed in</strong>, and only to sync it across your own devices. We do not sell your
-      data, show ads, or use third-party trackers.
+      data or show ads. For usage analytics and stability, the app uses Firebase Analytics
+      and Crashlytics (Google) — with no advertising trackers or cross-app tracking
+      (see section 2.5).
     </div>
 
     <h2>1. Who we are</h2>
@@ -164,7 +175,7 @@
       <li><strong>Email address</strong> — when you sign in with email or Google;</li>
       <li><strong>Display name</strong> — if you provide one.</li>
     </ul>
-    <p>Used solely for authentication and app functionality, never for tracking.</p>
+    <p>Used solely for authentication and app functionality, never for tracking. When you are signed in, this information is also stored in your cloud profile for sync (see section 3).</p>
 
     <h3>2.2. Workout &amp; health data</h3>
     <p>You enter this yourself while using the app:</p>
@@ -183,22 +194,22 @@
     <p>If you send feedback from the app, the message is currently written only to the device system log (diagnostic logs) and is not transmitted to our servers. If cloud feedback is enabled in the future, we will update this policy.</p>
 
     <h3>2.5. Technical data &amp; analytics</h3>
-    <p>GainzLog <strong>does not</strong> use advertising identifiers, cross-app tracking, or third-party analytics trackers. The Firebase Analytics library is present as a transitive dependency, but analytics collection is disabled at the configuration level and the app does not contact measurement servers. Preferences (units, onboarding flag, rest-timer sound, etc.) are stored locally in UserDefaults.</p>
+    <p>GainzLog does not use advertising identifiers (IDFA) or cross-app tracking (ATT), and shows no ads. For usage analytics and stability, the app embeds Google services: <strong>Firebase Analytics</strong> (anonymized usage statistics — app-instance ID, device model, OS version, session and screen events) and <strong>Firebase Crashlytics</strong> (crash reports — stack traces, device state, install identifier). This data is sent to Google and used only to improve the app — not for advertising and not to track you across other apps; health data (body weight, workouts) is not sent to analytics. Some preferences are stored only locally (UserDefaults) and are never uploaded: the onboarding flag, rest-timer sound, muscle-group selection, and your exercise-library membership.</p>
 
     <h2>3. Where data is stored</h2>
     <ul>
       <li><strong>On your device</strong> — the primary store (SwiftData). The app works fully offline.</li>
-      <li><strong>In the cloud (Google Cloud Firestore)</strong> — only when signed in. Data is scoped to your user id (<code>users/{uid}/…</code>) and used to sync across your devices and back it up.</li>
+      <li><strong>In the cloud (Google Cloud Firestore)</strong> — only when signed in. Data is scoped to your user id (<code>users/{uid}/…</code>) and used to sync across your devices and back it up. Your cloud profile (the <code>users/{uid}</code> document) includes: email address, display name, email-verification status and account-creation date; units, tracked exercises and progress metrics, rest-timer settings (duration and on/off); body weight and body-weight history; and your workouts, templates, plans and custom exercises. Avatar, feedback, muscle-group selection and library membership are not uploaded.</li>
     </ul>
 
     <h2>4. Legal bases (GDPR)</h2>
     <table>
       <tr><th>Purpose</th><th>Basis (GDPR Art. 6/9)</th></tr>
       <tr><td>Authentication and account operation</td><td>Contract (Art. 6(1)(b))</td></tr>
-      <tr><td>Cloud sync of workout &amp; body-weight data (health data)</td><td>Explicit consent (Art. 9(2)(a)); withdrawable anytime</td></tr>
+      <tr><td>Cloud sync of workout &amp; body-weight data (health data)</td><td>Explicit consent (Art. 9(2)(a)); given by enabling sync, withdrawable anytime</td></tr>
       <tr><td>Local storage and app functionality</td><td>Contract (Art. 6(1)(b))</td></tr>
     </table>
-    <p>You may withdraw consent at any time by signing out and/or deleting your data (section 6). Withdrawal does not affect the lawfulness of processing before it.</p>
+    <p>Cloud sync is off by default (local-first). It is enabled only by your affirmative action — signing in and verifying your email after accepting this Policy and the Terms of Service — which constitutes your explicit consent to cloud processing of health data. You may withdraw consent at any time by signing out and/or deleting your data (section 6). Withdrawal does not affect the lawfulness of processing before it.</p>
 
     <h2>5. Third parties</h2>
     <p>We do not sell or rent personal data. Data is processed by the following sub-processors solely to run the service:</p>
@@ -206,21 +217,21 @@
       <li><strong>Google (Firebase Authentication, Cloud Firestore)</strong> — authentication and cloud storage. See the <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase/Google privacy policy</a>.</li>
       <li><strong>Apple</strong> — if you use “Sign in with Apple,” Apple’s <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">privacy policy</a> applies.</li>
     </ul>
-    <p>Data is stored on Google Cloud infrastructure and may be processed outside your country. Such transfers are covered by Standard Contractual Clauses (SCCs) and Google’s safeguards.</p>
+    <p>Data is stored on Google Cloud infrastructure and may be processed outside your country. Such transfers are governed by the Google Cloud Data Processing Addendum (DPA), including the EU Standard Contractual Clauses (SCCs), and Google’s safeguards.</p>
 
     <h2>6. Retention &amp; deletion</h2>
     <ul>
       <li>Local data is retained until you delete it or remove the app.</li>
       <li>Cloud data is retained while your account exists.</li>
-      <li>You can <strong>delete your account</strong> in the app (Settings → account → delete). After re-authentication, local and cloud data are erased.</li>
-      <li>Signing out stops cloud sync; local data remains on the device.</li>
+      <li>You can <strong>delete your account</strong> in the app (Settings → account section → “Delete account”). If needed, the app will ask you to sign in again to confirm; after that, local and cloud data are erased.</li>
+      <li>Signing out stops cloud sync. If your account was syncing, the app first uploads any unsynced changes and then removes the local copy of your data from this device (signing back in restores it from the cloud). Your cloud data is not deleted on sign-out.</li>
     </ul>
 
     <h2>7. Your rights</h2>
     <p>Under the GDPR and similar laws you have the right to access, rectification, erasure, restriction, data portability, objection, and withdrawal of consent. You may also lodge a complaint with a data protection authority. To exercise your rights, contact <a href="mailto:gainzlog.support@protonmail.com">gainzlog.support@protonmail.com</a>.</p>
 
     <h2>8. Children</h2>
-    <p>GainzLog is not intended for anyone under 13, and we do not knowingly collect their data.</p>
+    <p>GainzLog is not intended for anyone under 13, and we do not knowingly collect their data. Where applicable law sets a higher age of digital consent (for example, up to 16 in some EU countries), that higher age applies.</p>
 
     <h2>9. Security</h2>
     <p>We apply reasonable technical measures (encrypted transport during sync, server-side access rules, owner-scoped data). No method of internet transmission is perfectly secure.</p>
