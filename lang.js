@@ -1,5 +1,5 @@
 // Language toggle for GainzLog legal pages.
-// Default order: ?lang= / #ru|#en / saved choice / browser language.
+// EN is the base default. Order: ?lang= / #ru|#en / saved choice / EN.
 (function () {
   function apply(lang) {
     document.documentElement.setAttribute('data-lang', lang);
@@ -19,7 +19,7 @@
     var saved;
     try { saved = localStorage.getItem('gz-lang'); } catch (e) {}
     if (saved === 'ru' || saved === 'en') return saved;
-    return (navigator.language || 'en').toLowerCase().indexOf('ru') === 0 ? 'ru' : 'en';
+    return 'en';
   }
 
   apply(pick());
