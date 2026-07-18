@@ -27,10 +27,10 @@
       <strong>Коротко.</strong> GainzLog — приложение-дневник тренировок с приоритетом
       локального хранения (local-first). Данные хранятся на вашем устройстве и работают
       офлайн. Мы отправляем данные в облако <strong>только если вы вошли в аккаунт</strong>,
-      и только для синхронизации между вашими устройствами. Мы не продаём ваши данные
-      и не показываем рекламу. Для аналитики использования и стабильности приложение
-      использует Firebase Analytics и Crashlytics (Google) — без рекламных трекеров
-      и межприложенческого отслеживания (см. раздел 2.5).
+      и только для синхронизации между вашими устройствами. Мы не продаём ваши данные,
+      не показываем рекламу и не собираем аналитику использования. Для стабильности
+      приложение использует Firebase Crashlytics (Google) — отчёты о сбоях, без рекламных
+      трекеров и межприложенческого отслеживания (см. раздел 2.5).
     </div>
 
     <h2>1. Кто мы</h2>
@@ -80,16 +80,14 @@
       на наши серверы. При подключении облачной обратной связи в будущем мы обновим эту политику.
     </p>
 
-    <h3>2.5. Технические данные и аналитика</h3>
+    <h3>2.5. Технические данные и диагностика</h3>
     <p>
-      GainzLog не использует рекламные идентификаторы (IDFA) и межприложенческое отслеживание
-      (ATT) и не показывает рекламу. Для аналитики использования и стабильности в приложение
-      встроены сервисы Google: <strong>Firebase Analytics</strong> (обезличенная статистика
-      использования — идентификатор экземпляра приложения, модель устройства, версия ОС,
-      события сессий и экранов) и <strong>Firebase Crashlytics</strong> (отчёты о сбоях — стек
+      GainzLog не использует рекламные идентификаторы (IDFA), межприложенческое отслеживание
+      (ATT) и рекламу, и не собирает аналитику использования. Для стабильности в приложение
+      встроен сервис Google <strong>Firebase Crashlytics</strong> — отчёты о сбоях (стек
       вызовов, состояние устройства, идентификатор установки). Эти данные передаются в Google
-      и используются только для улучшения приложения — не для рекламы и не для отслеживания вас
-      в других приложениях; данные о здоровье (вес тела, тренировки) в аналитику не передаются.
+      и используются только для исправления ошибок — не для рекламы и не для отслеживания вас
+      в других приложениях; данные о здоровье (вес тела, тренировки) в них не передаются.
       Часть настроек хранится только локально (UserDefaults) и в облако не передаётся: флаг
       прохождения онбординга, звук таймера отдыха, выбор групп мышц, состав вашей библиотеки
       упражнений.
@@ -155,9 +153,9 @@
       <strong>In short.</strong> GainzLog is a local-first workout journal. Your data lives
       on your device and works offline. We send data to the cloud <strong>only when you are
       signed in</strong>, and only to sync it across your own devices. We do not sell your
-      data or show ads. For usage analytics and stability, the app uses Firebase Analytics
-      and Crashlytics (Google) — with no advertising trackers or cross-app tracking
-      (see section 2.5).
+      data, show ads, or collect usage analytics. For stability, the app uses Firebase
+      Crashlytics (Google) — crash reports, with no advertising trackers or cross-app
+      tracking (see section 2.5).
     </div>
 
     <h2>1. Who we are</h2>
@@ -193,8 +191,8 @@
     <h3>2.4. Feedback</h3>
     <p>If you send feedback from the app, the message is currently written only to the device system log (diagnostic logs) and is not transmitted to our servers. If cloud feedback is enabled in the future, we will update this policy.</p>
 
-    <h3>2.5. Technical data &amp; analytics</h3>
-    <p>GainzLog does not use advertising identifiers (IDFA) or cross-app tracking (ATT), and shows no ads. For usage analytics and stability, the app embeds Google services: <strong>Firebase Analytics</strong> (anonymized usage statistics — app-instance ID, device model, OS version, session and screen events) and <strong>Firebase Crashlytics</strong> (crash reports — stack traces, device state, install identifier). This data is sent to Google and used only to improve the app — not for advertising and not to track you across other apps; health data (body weight, workouts) is not sent to analytics. Some preferences are stored only locally (UserDefaults) and are never uploaded: the onboarding flag, rest-timer sound, muscle-group selection, and your exercise-library membership.</p>
+    <h3>2.5. Technical data &amp; diagnostics</h3>
+    <p>GainzLog does not use advertising identifiers (IDFA), cross-app tracking (ATT), or ads, and does not collect usage analytics. For stability, the app embeds one Google service — <strong>Firebase Crashlytics</strong> (crash reports — stack traces, device state, install identifier). This data is sent to Google and used only to fix bugs — not for advertising and not to track you across other apps; health data (body weight, workouts) is not included. Some preferences are stored only locally (UserDefaults) and are never uploaded: the onboarding flag, rest-timer sound, muscle-group selection, and your exercise-library membership.</p>
 
     <h2>3. Where data is stored</h2>
     <ul>
